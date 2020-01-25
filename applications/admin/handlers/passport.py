@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""URL处理器
+
+[description]
+"""
+
+import tornado
+
+from applications.core.utils.encrypter import RSAEncrypter
+from applications.core.utils.hasher import check_password
+from applications.core.utils.hasher import make_password
+from applications.core.utils import Func
+from applications.core.settings_manager import settings
+from applications.core.logger.client import SysLogger
+from applications.core.cache import sys_config
+
+from ..models import User
+
+from .common import CommonHandler
+
+
+class LoginHandler(CommonHandler):
+    """docstring for Passport"""
+    def get(self, *args, **kwargs):
+        next = self.get_argument('next', '')
+        params = {
+            'public_key': sys_config('sys_login_rsa_pub_key'),
+            'rsa_encrypt': sys_config('login_pwd_rsa_encrypt'),
+            'next': next,
+            'message': '',
+        }
+        self.render('passport/login.html', **params)
+
+    def post(self, *args, **kwargs):
+        username = self.get_argument('username')
+        next = self.get_argument('next', '')
+        password = self.get_argument('password', '')
+        rsa_encrypt = self.get_argument('rsa_encrypt', 0)
+        rsa_encrypt = int(rsa_encrypt) if rsa_encrypt else 0
+        code = self.get_argument('code', '')
+        _ = self.locale.translate
+
+        if self.invalid_img_captcha(code):
+            return self.error(_('验证码错误'))
+
+        if settings.login_pwd_rsa_encrypt and rsa_encrypt==1 and len(password)>10:
+            private_key = sys_config('sys_login_rsa_priv_key')
+            password = RSAEncrypter.decrypt(password, private_key)
+
+        user = User.Q.filter(User.username==username).first()
+        if user is None:
+            return self.error('用户名或者密码错误')
+        if check_password(password, user.password) is not True:
+            return self.error('用户名或者密码错误')
+
+        if int(user.status)==0:
+            return self.error('用户被“禁用”，请联系客服')
+
+        User.login_success(user, self)
+        self.clear_cookie(settings.valid_code_key)
+
+        return self.success(next=next)
+
+class LogoutHandler(CommonHandler):
+    """docstring for Passport"""
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        cache_key = self.get_secure_cookie(settings.admin_session_key)
+        self.clear_cookie(cache_key)
+        self.redirect(self.get_login_url())
+
+
+class CaptchaHandler(CommonHandler):
+    def get(self, *args, **kwargs):
+        import io
+        from applications.core.utils.image import create_validate_code
+        #创建一个文件流
+        imgio = io.BytesIO()
+        #生成图片对象和对应字符串
+        img, code = create_validate_code(size=(160, 38), font_size=32)
+        self.set_secure_cookie(settings.valid_code_key, code, expires_days=1)
+        #将图片信息保存到文件流
+        img.save(imgio, 'png')
+        #返回图片
+        self.set_header('Content-Type', 'image/png')
+        self.write(imgio.getvalue())
+        return self.finish()

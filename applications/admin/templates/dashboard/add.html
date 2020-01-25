@@ -1,0 +1,122 @@
+{% extends "../base.html" %}
+
+{% block title %} {% end %}
+{% block css %} {% end %}
+{% block body %}
+<div class="layui-body">
+    <form class="layui-form" action="{{ request.uri }}" method="post" id="editForm" lay-filter="editForm">
+        {% raw xsrf_form_html() %}
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">证书号</label>
+            <div class="layui-input-inline w300">
+                <input type="text" class="layui-input field-title" name="lbh" lay-verify="" autocomplete="off" placeholder="">
+            </div>
+            <div class="layui-form-mid layui-word-aux w300">
+                系统唯一编码
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名字</label>
+            <div class="layui-input-inline w300">
+                <input type="text" class="layui-input field-subtitle" name="name" lay-verify="" autocomplete="off" placeholder="">
+            </div>
+            <label class="layui-form-label">日期</label>
+            <div class="layui-input-inline w100">
+                <input type="text" class="layui-input field-sort" name="data" lay-verify="" autocomplete="off" placeholder="">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">星座</label>
+            <div class="layui-input-inline w300">
+                <input type="text" class="layui-input field-key" name="xz" lay-verify="" autocomplete="off" value="">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">赤经</label>
+            <div class="layui-input-inline w300">
+                <input type="text" class="layui-input field-key" name="cj" lay-verify="" autocomplete="off" value="">
+            </div>
+            <label class="layui-form-label">赤度</label>
+            <div class="layui-input-inline w300">
+                <input type="text" class="layui-input field-key" name="cw" lay-verify="" autocomplete="off" value="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">视星等</label>
+            <div class="layui-input-inline w300">
+                <input type="text" class="layui-input field-key" name="sx" lay-verify="" autocomplete="off" value="">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">纪念</label>
+            <div class="layui-input-inline w700">
+                <textarea rows="6"  class="layui-textarea field-value" name="jn" lay-verify="" autocomplete="off" placeholder=""></textarea>
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+
+        <div style="position:fixed; bottom:0; background: #fff; width: 100%; height: 3.2em; text-align: center;">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="formSubmit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+{% end %}
+{% block javascript %}
+<script type="text/javascript">
+
+var formData = {% raw data_info %}
+
+layui.use(['form'], function() {
+    var $ = layui.jquery
+    var form = layui.form
+
+    set_form_data(formData)
+
+    // 表单验证
+    form.verify({
+        title : [/[A-Za-z0-9\u4e00-\u9fa5]{2,40}$/, '角色名称必须2到40位字母、数字组合或汉字'],
+        key : [/[A-Za-z]+[A-Za-z0-9_]{1,40}$/, ' 由英文字母和下划线组成，必须以字母开头'],
+        number : [/^[0-9]*$/, '必须输入整数']
+    })
+
+    form.on('submit(formSubmit)', function(obj) {
+        layer.msg('数据提交中...',{time:50000})
+
+        $.ajax({
+            type: "POST",
+            url: obj.form.action,
+            data: obj.field,
+            success: function(res) {
+                if (res.code==0) {
+                    layer.msg('操作成功', {icon: 1, time: 2000}, function(){
+                        parent.edit_success(res.data)
+                        var index = parent.layer.getFrameIndex(window.name)
+                        parent.layer.close(index)
+                    })
+                } else if(res.msg) {
+                    layer.msg(res.msg)
+                    $(":input[name='title']").focus()
+                } else {
+                    layer.msg('{{ _('未知错误') }}')
+                }
+            },
+            error: function(xhr){
+                console.log(xhr.responseJSON)
+                if (xhr.responseJSON && xhr.responseJSON.msg) {
+                    layer.msg(xhr.responseJSON.msg)
+                } else {
+                    layer.msg('{{ _('未知错误') }}')
+                }
+            }
+        })
+        return false
+    })
+})
+
+</script>
+{% end %}

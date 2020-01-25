@@ -1,0 +1,210 @@
+{% extends "../base.html" %}
+
+{% block title %} {% end %}
+{% block css %} {% end %}
+{% block body %}
+<div class="layui-body">
+    <div class="layui-btn-group topToolbar">
+        <a class="layui-btn layui-btn-primary" data-type="add">
+            <i class="layui-icon">&#xe608;</i>添加
+        </a>
+    </div>
+
+    <table class="layui-table"  id="book_list_table" lay-filter="book_list">
+
+    </table>
+</div>
+{% end %}
+
+
+{% block javascript %}
+<script type="text/html" id="book_list_bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit" title="编辑">
+        <i class="layui-icon">&#xe642;</i>
+    </a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" title="删除">
+        <i class="layui-icon">&#xe640;</i>
+    </a>
+</script>
+
+
+<script type="text/javascript">
+var edit_curent_obj = false
+
+var edit_success = function(data) {
+    if (edit_curent_obj) {
+        edit_curent_obj.update({
+            lbh: data.lbh,
+            name: data.name,
+            data: data.data,
+            xz: data.xz,
+            cj: data.cj,
+            cw: data.cw,
+            sx: data.sx,
+            jn: data.jn,
+
+        })
+        if (status_html[data.status]) {
+            var td = edit_curent_obj.tr.children('td[data-field="status"]')
+            td.html(status_html[data.status])
+        }
+    } else {
+        window.location.reload()
+    }
+}
+
+layui.use(['table','form'], function() {
+    var table = layui.table
+    var form = layui.form
+    console.log(layui.v)
+
+    table.render({
+        elem: '#book_list_table'
+        ,url:'/admin/welcome/list'
+        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        ,cols: [[
+            {type:'checkbox', fixed: 'left'}
+          ,{field:'lbh', title: '证书号', width:140, sort: true}
+          ,{field:'name', title: '姓名',width:140}
+          ,{field:'data', title: '日期',width:140}
+          ,{field:'xz', title: '星座',width:140}
+          ,{field:'cj', title: '赤经',width:140}
+          ,{field:'cw', title: '赤度',width:140}
+          ,{field:'sx', title: '视星等',width:140} //单元格内容水平居中
+          ,{field:'jn', title: '纪念',width:140}
+          ,{field:'utc_created_at', title: '创建日期',width:140, sort: true}
+          ,{fixed: 'right', title:'操作', toolbar: '#book_list_bar',width:80}
+        ]]
+        ,page: true
+      });
+
+    //监听表格复选框选择
+    table.on('checkbox(book_list)', function(obj) {
+        console.log(obj)
+    })
+    //监听工具条
+    table.on('tool(book_list)', function(obj) {
+        var data = obj.data;
+        //console.log(data)
+        switch(obj.event) {
+            case 'edit':
+                edit_curent_obj = obj
+                edit(data)
+                break;
+            case 'del':
+                layer.confirm('删除之后无法恢复，您确定要删除吗？', function(index) {
+                    del(data.aid, obj, index)
+                });
+                break;
+        }
+    })
+
+    var $ = layui.$, active = {
+        add: function() {
+            layer.open({
+                type: 2,
+                title: ['添加登记册', 'background-color: #00bb9d;text-align:center;font-size:18px;color:#fff;'],
+                shadeClose: true,
+                shade: false,
+                maxmin: false,
+                area: ['900px', '520px'],
+                content: '/admin/welcome/list/add',
+                end: function() {
+                    layer.closeAll()
+                }
+            })
+        }
+        ,getCheckLength: function() { //获取选中数目
+            var checkStatus = table.checkStatus('book_list_table')
+            ,data = checkStatus.data;
+            layer.msg('选中了：'+ data.length + ' 个');
+        }
+        ,isAll: function() { //验证是否全选
+            var checkStatus = table.checkStatus('book_list_table');
+            layer.msg(checkStatus.isAll ? '全选': '未全选')
+        }
+    }
+
+    $('.topToolbar .layui-btn').on('click', function() {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    })
+
+    // 编辑
+    var edit = function(data) {
+        layer.open({
+            type: 2,
+            title: ['编辑登记册', 'background-color: #00bb9d;text-align:center;font-size:18px;color:#fff;'],
+            shadeClose: true,
+            shade: false,
+            maxmin: false,
+            area: ['900px', '520px'],
+            content: '/admin/welcome/list/edit?aid=' + data.aid
+        })
+    }
+    // 删除
+    var del = function(aid, obj, index) {
+        var next = '/admin/welcome/list/delete'
+        $.ajax({
+            type: 'DELETE',
+            url: next,
+            data: {aid: aid, _xsrf: get_xsrf()},
+            dataType: 'json',
+            success: function(data) {
+                obj.del();
+                layer.close(index);
+                if (data.code==0) {
+                    layer.msg('{{ _('操作成功') }}')
+                } else if(data.msg) {
+                    layer.msg(data.msg)
+                } else {
+                    layer.msg('{{ _('未知错误') }}')
+                }
+                setTimeout(function(){
+                    window.parent.layer.closeAll()
+                }, 2000)
+            },
+            error: function(xhr) {
+                // console.log(xhr.status)
+                if (xhr.responseJSON && xhr.responseJSON.msg) {
+                    layer.msg(xhr.responseJSON.msg)
+                } else {
+                    layer.msg('{{ _('未知错误') }}.')
+                }
+            }
+        })
+    }
+
+    form.on('switch(status)', function(){
+        var status = this.checked ? 1 : 0
+        var key = $(this).parent().parent().parent().children('td[data-field="key"]').children('div').html()
+
+        var params = {key:key, old_key:key, status:status, }
+        params['_xsrf'] = get_xsrf()
+
+        $.ajax({
+            type: "POST",
+            url: '/admin/dashboard/edit',
+            data: params,
+            success: function(res) {
+                if (res.code==0) {
+                    console.log('success')
+                } else if(res.msg) {
+                    layer.msg(res.msg)
+                } else {
+                    layer.msg('{{ _('未知错误') }}')
+                }
+            },
+            error: function(xhr){
+                // console.log(xhr.responseJSON)
+                if (xhr.responseJSON && xhr.responseJSON.msg) {
+                    layer.msg(xhr.responseJSON.msg)
+                } else {
+                    layer.msg('{{ _('未知错误') }}')
+                }
+            }
+        })
+    })
+})
+</script>
+{% end %}

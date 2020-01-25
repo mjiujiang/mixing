@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.pyc
+*.bak
+local.py
+
+*.pem
+py3
+logs/*.log
+*.log.*
+node_modules
+.idea
+*.php
+upload/avator
+applications/statics/upload/avator
+*.pdf
+remove_bocai_tb.sql
+applications/statics/upload
+applications/statics/layui/css/modules/layim/*
+applications/statics/layui/lay/modules/layim.js
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

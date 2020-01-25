@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  <title>登记册</title>
+
+  <link rel="stylesheet" href="{{ static_url('layui/css/layui.css ') }}">
+      <script type="text/javascript">
+        if ((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i))) {    //跳到手机端
+            document.write("<link href=" + "{{ static_url('home/css/m_mixing.css') }}" + " rel=stylesheet >");
+        }else {
+            document.write("<link href=" + "{{ static_url('home/css/mixing.css') }}" + " rel=stylesheet >");
+        }
+    </script>
+
+	
+</head>
+<body>
+  <!-- nav部分 -->
+  <div class="bgpicbooks" id="books">
+
+
+
+  <div class="menu">
+      <ul class="menubar">
+          <li class="menu-value" ><a href="/">首页</a></li>
+          <li class="" ><a href="/books.html">登记册</a></li>
+          <li class="" ><a href="/shop.html">觅星商店</a></li>
+          <li class="" ><a href="/about.html">关于</a></li>
+      </ul>
+  </div>
+
+  <div class="logo">
+      <h1> <a><img src="{{ static_url('home/images/logo.png') }}" class="logoimg" alt="觅星"> </a></h1>
+  </div>
+      <div class="layui-container bottom-nav">
+          <div class="layui-row box">
+              <div class="layui-col-xs3">
+                    <a href="/">首页</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs3">
+                    <a href="/books.html">登记册</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs4">
+                    <a href="/shop.html">觅星商店</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs2">
+                  <a href="/about.html">关于</a>
+              </div>
+
+          </div>
+      </div>
+  </div>
+
+
+  <form action="/books/query/" class="bookssearch" target="iframeResult" >
+    {{ xsrf_form_html()}}
+	<a >请输入登记册:</a> <input type="search" name="search" class="bookinput">
+    <input class="bookinputsubmit" type="submit" value="提交" id="submit" data-method="notice" >
+
+  </form>
+
+<iframe name="iframeResult" id="iframeResult" style="display:none"></iframe>
+
+
+
+  <!-- footer部分 -->
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{{ static_url('layui/layui.js') }}"></script>
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+
+  layui.use(['element', 'table', 'layer'], function(){
+        var element = layui.element;
+        var table = layui.table;
+        var $ = layui.jquery, layer = layui.layer;
+
+        // 存放结果数据
+        var Datas = [];
+        //触发事件
+
+//判断浏览器大小方法
+    function screen() {
+        //获取当前窗口的宽度
+	    var width = $(window).width();
+	    if (width > 1200) {
+	        return 3;   //大屏幕
+	    } else if (width > 992) {
+	        return 2;   //中屏幕
+	    } else if (width > 768) {
+	        return 1;   //小屏幕
+	    } else {
+	        return 0;   //超小屏幕
+	    }
+    }
+
+
+    function showTable(){
+      // 查询结果
+      layer.open({
+        type: 1,
+        id: 'Layer',
+        title: false,
+        area: screen() < 2 ? ['90%', '80%'] : ['740px', '400px'],
+          skin:'poplayer-class',
+        shade:  0,
+        anim: -1,
+        content: '<div class="table" style="background-color: #393D49; color: #fff; "></div>',
+        success: function(layero, index) {
+            layer.iframeAuto(index);
+            var colsList = [
+                [
+                    { field: 'title', title: '标题', width:100 },
+                    { field: 'content', title: '内容' }
+                ]
+            ];
+
+            console.log(Datas);
+            table.render({
+                elem: layero.find('.table'),
+                id: 'Message',
+                data: Datas,
+                cols: colsList,
+                limit: 8,
+                page: false,
+            });
+        }
+      });
+    }
+
+
+    $(document).ready(function () {
+       // $('#submit').click();
+        $('#iframeResult').load(function () {
+            var text=$(this).contents().find("body").text();    // 获取到json数据
+            if(typeof text == "undefined" || text == null || text == "")
+                return;
+            text= text.replace(/\'/g, "\"");
+            console.log(text)
+            try {
+                text = JSON.parse(text);
+
+                // 赋值弹出表数据
+                Datas.push({
+                    title: '录编号',
+                    content: text.lbh,
+                });
+                Datas.push({
+                    title: '名字',
+                    content: text.name,
+                });
+                Datas.push({
+                    title: '纪念日期',
+                    content: text.data,
+                });
+                Datas.push({
+                    title: '星座',
+                    content: text.xz,
+                });
+                Datas.push({
+                    title: '赤经',
+                    content: text.cj,
+                });
+                Datas.push({
+                    title: '赤纬',
+                    content: text.cw,
+                });
+                Datas.push({
+                    title: '视星等',
+                    content: text.sx,
+                });
+                Datas.push({
+                    title: '纪念',
+                    content: text.jn,
+                });
+                showTable();
+            }
+            catch (e) {
+                console.error(e);
+                layer.msg('输入信息错误！');
+            }
+
+        });
+    })
+
+    });
+</script>
+
+</body>
+</html>

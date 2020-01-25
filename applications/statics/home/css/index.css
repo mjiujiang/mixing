@@ -1,0 +1,122 @@
+/**
+ 
+
+ @Copyright: layui.com
+ 
+ */
+
+
+body{background: transparent;}
+
+/** 首页 */
+
+/*导航部分*/
+.nav{width: 100%; height: 80px;  background: transparent none no-repeat; position: fixed ; left: 0; top: 0; z-index: 999; overflow: hidden; transition: 0.3s}
+.nav.index{background: transparent; }
+.nav.scroll{ background:transparent; transition: 0.3s}
+.nav .layui-container{position: relative; transition: all 400ms ease-out;}
+.nav .nav-logo{height: 100%; position: absolute; top: 0; left: 15px; line-height: 80px;}
+.nav .nav-list{display: inline-block; height: 80px;}
+.nav .nav-list button{width: 25px; height: 30px; position: absolute; top: 30px; right: 15px; background-color: transparent; border: none; outline: none; cursor: pointer;}
+.nav .nav-list button span{display: block; width: 25px; height: 2px; background: #2db5a3; margin-bottom: 6px; transition: 0.5s;}
+.nav .nav-list button span.spa1{transform: rotate(45deg);}
+.nav .nav-list button span.spa3{transform: rotate(-45deg) translate(5px,-5px);}
+.nav .layui-nav{width: 100%; position: absolute; top: 80px; right: 0; color: #000; background: transparent;}
+.nav .layui-nav .layui-nav-item{display: block; line-height: 60px;}
+.nav .layui-nav *{font-size: 18px;}
+.nav .layui-nav .layui-nav-item a{padding: 0 0; color: #000;}
+.nav .layui-nav-bar,
+.nav .layui-nav .layui-this:after{height: 2px; background-color: #f2faf9;}
+.nav .layui-nav .layui-this a
+,.nav .layui-nav .layui-nav-item a:hover{color: #eff3f2;}
+
+/*轮播*/
+#banner img{min-width: 100%; height: 100%;}
+#banner .panel{width: 700px; position: absolute; top: 25%; left: 30%; margin-left: -200px; text-align: center;}
+#banner .panel p{color: #fcf8f8; font-size: 44px; line-height: 80px; letter-spacing: 15px;}
+#banner .panel p.title{color: #4a4a4a; font-size: 54px; letter-spacing: 10px;}
+
+/*轮播*/
+#shop button{min-width: 100%; height: 100%;}
+.shop{width: 80px; position: absolute; bottom: 13%; right: 1%;   background: transparent;}
+
+
+
+@media screen and (max-width: 480px){
+  .main-service .content .content-right{padding: 10px 10px 0 10px;}
+  .main-service .content .content-right p{line-height: 24px;}
+  .main-news .content .news-panel p.read-push{font-size: 12px;}
+  .main-case .content{padding-top: 60px;}
+  .main-case .content p.lable{padding-top: 10px; font-size: 18px; line-height: 48px;}
+  .main-case .content p{font-size: 12px; line-height: 20px; color: #505050;}
+  .main-about ul.aboutab{padding: 70px 0;}
+  .main-about ul.aboutab li{padding: 0 15px; font-size: 16px; box-sizing: border-box;}
+  .main-about .tabIntro .content .img{width: 100%;}
+  .main-about .tabIntro .content .panel{width: 100%;}
+  .main-about .tabIntro .content .panel.p_block{display: none;}
+  .main-about .tabIntro .p_hidden{display: block;}
+  .main-news #newsPage .layui-laypage a,.main-news #newsPage .layui-laypage span
+  ,.main-case #casePage .layui-laypage a,.main-case #casePage .layui-laypage span{padding: 0 12px; font-size: 14px; line-height: 30px; height: 30px; margin-right: 4px;}
+}
+/*小屏幕*/
+@media screen and (min-width: 768px){
+  .nav{max-height: 80px;}
+  .nav.index{background: rgba(255, 255, 255 ,0.3);}
+  .nav .nav-list button{display: none;}
+  .nav .layui-nav{width: auto; position: absolute; top: 0; padding: 0 5px; border-radius: 0; margin: 0;}
+  .nav .layui-nav .layui-nav-item{display: inline-block; margin:0 53px; line-height: 80px;}
+  .main-product p.title
+  ,.main-service p.title{font-size: 36px; line-height: 216px;}
+  .main.product .content .content-img{text-align: left;}
+  .main-news .content .news-panel strong a{font-size: 20px; line-height: 30px;}
+  .main-news .content .news-panel p.read-push{padding-top: 0; position: absolute; bottom: 40px;}
+  .main-newsdate .pushtime{line-height: 142px;}
+  .main-case .content{width: 45%;}
+  .main-case .content.even{margin-left: 9%;}
+  .main-about ul.aboutab li{padding: 0 32px; font-size: 24px; margin-left: 30px; line-height: 50px;}
+  .main-about .tabIntro .content p{padding: 0 30px; font-size: 18px; line-height: 30px;}
+  .main-about .tabJob .content p{font-size: 24px; line-height: 50px;}
+  .main-about .tabJob .content p.title{font-size: 30px; line-height: 90px;}
+  .main-about .tabJob .content ol li{font-size: 20px; line-height: 60px;}
+  .main-about .tabCour .timeline:before{left: 50%;}
+  .main-about .tabCour .timeline li{min-height: 195px; padding-top: 95px;}
+  .main-about .tabCour .timeline li .cour-img{left: 50%; margin-left: -97.5px; width: 195px;}
+  .main-about .tabCour .timeline li .cour-panel{padding-top: 55px; padding-left: 0;}
+  .main-about .tabCour .timeline li.odd .cour-panel{text-align: right;}
+}
+@media screen and (min-width: 768px) and (max-width: 992px){
+  .main.product .content div.right{padding-left: 20px;}
+  .nav .layui-nav .layui-nav-item{margin:0 33px;}
+  .main-service .content .content-right{padding: 10px 10px 0 15px;}
+  .main-service .content .content-right span{margin-bottom: 20px;}
+  .main-service .content .content-right p{line-height: 28px;}
+  .main.product .content .label{line-height: 40px; margin-top: 0;}
+  .main.product .content .detail{padding-bottom: 10px;}
+}
+/*大屏幕*/
+@media screen and (min-width: 992px){
+  .main.product .content{padding: 100px 0;}
+  .main.product .content div.right{padding-left: 0;}
+  .main-news .content .news-img{width: 20%;}
+  .main-news .content .news-panel{width: 80%;}
+  .main-case .content{width: 31%;}
+  .main-case .content.even{margin-left: 0;}
+  .main-case .content.center{margin-right: 3%; margin-left: 3%;}
+  .main-about .tabIntro .content p{padding: 0 50px; font-size: 20px; line-height: 40px;}
+}
+/*超大屏幕*/
+@media screen and (min-width: 1200px) {
+  .main-news .content .news-img{width: 35%;}
+  .main-news .content .news-panel{width: 65%;}
+  .main-news .content:nth-child(odd){padding-right: 20px;}
+  .main-news .content:nth-child(even){padding-left: 20px;}
+  .main-about .tabCour .timeline li .cour-panel{padding-left: 50px;}
+  .main-about .tabCour .timeline li.odd .cour-panel{padding-left: 0; padding-right: 50px;}
+}
+@media screen and (min-width: 1300px) {
+  .layui-container{width: 1200px; padding: 0;}
+  .main-about .tabJob .content:last-child{margin-bottom: 180px;}
+  .nav .nav-logo{position: absolute; top: 0; left: 0;}
+  .layui-col-space80{margin: -40px;}
+  .layui-col-space80>*{padding: 40px;}
+}

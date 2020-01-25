@@ -1,0 +1,44 @@
+{% extends "common/base.htm" %}
+
+{% block title %} 首页 - {{site_name}} {% endblock %}
+{% block style %}
+<style type="text/css">
+.date {
+    width: 80px;
+    height: 80px;
+}
+.date p {
+    font-size: 1.2em;
+    line-height: 1.2em;
+}
+.new-grids {
+    margin-top:1.1em;
+}
+.new-grid-right p {
+    font-size: 0.7em;
+}
+</style>
+{% endblock %}
+{% block body %}
+    {% include "common/banner.htm" %}
+
+    {% include "common/top_nav.htm" %}
+    <div class="container" style="">
+        <!-- banner-bottom -->
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "common/footer.htm" %}
+    {% include "common/copyright.htm" %}
+{% endblock %}
+
+{% block javascript %}
+<!-- script-for sticky-nav -->
+
+
+
+<!--//end-smoth-scrolling-->
+{% endblock %}

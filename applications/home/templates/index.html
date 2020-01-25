@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  <title>首页</title>
+  <link rel="stylesheet" href="{{ static_url('layui/css/layui.css ') }}">
+
+    <script type="text/javascript">
+    if ((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i))) {
+        document.write("<link href=" + "{{ static_url('home/css/m_mixing.css') }}" + " rel=stylesheet >");
+    }else {
+        document.write("<link href=" + "{{ static_url('home/css/mixing.css') }}" + " rel=stylesheet >");
+    }
+
+    </script>
+</head>
+<body>
+  <!-- nav部分 -->
+  <div class="bgpicindex">
+
+      <div class="menu">
+          <ul class="menubar">
+              <li class="menu-value" ><a href="/">首页</a></li>
+              <li class="" ><a href="/books.html">登记册</a></li>
+              <li class="" ><a href="/shop.html">觅星商店</a></li>
+              <li class="" ><a href="/about.html">关于</a></li>
+          </ul>
+      </div>
+
+      <div class="logo">
+          <h1> <a><img src="{{ static_url('home/images/logo.png') }}" class="logoimg" alt="觅星"> </a></h1>
+      </div>
+      <p class="slogan">
+          A GIFT FROM THE STARS<br>来自星星的礼物
+      </p>
+      <div class="layui-container bottom-nav">
+          <div class="layui-row box">
+              <div class="layui-col-xs3">
+                    <a href="/">首页</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs3">
+                    <a href="/books.html">登记册</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs4">
+                    <a href="/shop.html">觅星商店</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs2">
+                  <a href="/about.html">关于</a>
+              </div>
+
+          </div>
+      </div>
+
+  </div>
+  
+  <!-- footer部分 -->
+
+<script src="{{ static_url('layui/layui.js') }}"></script>
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+  layui.config({
+    base: "{{ static_url('home/js/') }}"
+  }).use('firm'); 
+  layui.use('element', function(){
+        var element = layui.element;
+
+  
+
+    });
+</script>
+</body>
+</html>
