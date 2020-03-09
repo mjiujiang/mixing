@@ -9,6 +9,7 @@ from .handlers import role
 from .handlers import menu
 from .handlers import config
 from .handlers import content
+from .handlers import boll
 
 # 其他 URL 通过 acl 获取
 urls = [
@@ -24,10 +25,16 @@ urls = [
     (r"/admin/welcome/?(.html)?", dashboard.WelcomeHandler),
     (r"/admin/welcome/list?(.html)?", dashboard.BooksListHandler),
 
+
     # mixing
     (r"/admin/welcome/list/delete?(.html)?", dashboard.BooksListHandler),
     (r"/admin/welcome/list/add?(.html)?", dashboard.BooksListAddHandler),
     (r"/admin/welcome/list/edit?(.html)?", dashboard.BooksListEditHandler),
+
+    (r"/admin/boll/?(.html)?", boll.BollHandler),
+    (r"/admin/boll/list?(.html)?", boll.BollListHandler),
+    (r"/admin/boll/list/delete?(.html)?", boll.BollListHandler),
+    (r"/admin/boll/upload?(.html)?", boll.BollHandler),
 
     # config
     (r"/admin/config/index?(.html)?", config.ConfigHandler),

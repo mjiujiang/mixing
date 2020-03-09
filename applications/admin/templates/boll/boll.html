@@ -1,0 +1,118 @@
+{% extends "../base.html" %}
+
+{% block title %} {% end %}
+{% block css %} {% end %}
+{% block body %}
+<div class="layui-body">
+    <div class="layui-btn-group topToolbar">
+
+        {% raw xsrf_form_html() %}
+        <button type="button" class="layui-btn" id="planet_boll" name="file">
+            <i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+
+    </div>
+
+    <table id="table_boll" lay-filter="table_boll"></table>
+
+</div>
+{% end %}
+
+{% block javascript %}
+
+<script type="text/html" id="barBoll">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+
+<script>
+    layui.use(['upload','table','form'], function () {
+        var upload = layui.upload;
+        var table = layui.table;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#planet_boll' //绑定元素
+            , url: '/admin/boll/upload' //上传接口
+            ,multiple:true
+            , data: {
+                _xsrf: get_xsrf()
+            }
+            , done: function (res) {
+                //上传完毕回调
+                table.reload('table_boll', {
+                    url: '/admin/boll/list'
+
+                });
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+
+        table.render({
+            elem: '#table_boll'
+            , height: 400
+            , url: '/admin/boll/list' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                , {field: 'bollname', title: '图片名'}
+                , {field: 'utc_created_at', title: '日期'}
+                ,{fixed: 'right', width:150, align:'center', toolbar: '#barBoll'}
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(table_boll)', function (obj) {
+            var data = obj.data;
+            //console.log(data)
+            switch (obj.event) {
+                case 'del':
+                    layer.confirm('删除之后无法恢复，您确定要删除吗？', function (index) {
+                        del(data.id, obj, index)
+                        layer.close(index);
+                    });
+                    break;
+            }
+        })
+
+        // 删除
+        var del = function (id, obj, index) {
+            var next = '/admin/boll/list/delete'
+            $.ajax({
+                type: 'DELETE',
+                url: next,
+                data: {id: id, _xsrf: get_xsrf()},
+                dataType: 'json',
+                success: function (data) {
+                    obj.del();
+                    layer.close(index);
+                    if (data.code == 0) {
+                        layer.msg('{{ _('操作成功') }}'
+                    )
+                    } else if (data.msg) {
+                        layer.msg(data.msg)
+                    } else {
+                        layer.msg('{{ _('未知错误') }}'
+                    )
+                    }
+                    setTimeout(function () {
+                        window.parent.layer.closeAll()
+                    }, 2000)
+                },
+                error: function (xhr) {
+                    // console.log(xhr.status)
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        layer.msg(xhr.responseJSON.msg)
+                    } else {
+                        layer.msg('{{ _('未知错误') }}.'
+                    )
+                    }
+                }
+            })
+        }
+    });
+</script>
+
+{% end %}

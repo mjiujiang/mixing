@@ -13,7 +13,10 @@ urls = [
 
     (r"/books/?(.html)?", books.BooksHandler),
     (r"/books/list/?(.html)?", books.BooksListHandler),
-    (r"/books/query/?(.html)?", books.BooksQueryHandler),
+    (r"/books/query/?(.html)?", books.BooksQueryResultHandler),
+    (r"/books/query_result/?(.html)?", books.BooksQueryHandler),
+
+    (r"/feiyan/?(.html)?", index.FeiyanHandler),
 
 
 ]

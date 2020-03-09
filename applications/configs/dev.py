@@ -18,23 +18,23 @@ DATABASE_CONNECTION = {
             {
                 'ROLE': 'master',
                 'DRIVER': 'mysql+mysqldb',
-                'UID': 'user_py_admin',
+                'UID': 'mixing',
                 # 进过AES加密的密码，格式 aes::: + ciphertext
-                'PASSWD': 'aes:::0kjQ525asdbBMDS9mHpHNQ==',
+                'PASSWD': 'aes:::bE8FoAw36SPkANwInh2NmA==',
                 'HOST': '127.0.0.1',
                 'PORT': 3306,
-                'DATABASE': 'mingxing',
+                'DATABASE': 'mixing2020',
                 'QUERY': {'charset': 'utf8'}
             },
             {
                 'ROLE': 'slave',
                 'DRIVER': 'mysql+mysqldb',
-                'UID': 'user_py_admin',
+                'UID': 'mixing',
                 # 进过AES加密的密码，格式 aes::: + ciphertext
-                'PASSWD': 'aes:::0kjQ525asdbBMDS9mHpHNQ==',
+                'PASSWD': 'aes:::bE8FoAw36SPkANwInh2NmA==',
                 'HOST': '127.0.0.1',
                 'PORT': 3306,
-                'DATABASE': 'mingxing',
+                'DATABASE': 'mixing2020',
                 'QUERY': {'charset': 'utf8'}
             }
         ]

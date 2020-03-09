@@ -58,3 +58,24 @@ class Books(BaseModel):
     def updated_at(self):
         return Func.dt_to_timezone(self.utc_updated_at)
 
+
+class Bolls(BaseModel):
+    """
+        Boll model
+        """
+    __tablename__ = 'mx_boll'
+
+    id = Column(Integer, primary_key=True)
+
+    bollurl = Column(VARCHAR(250), nullable=True, default='')
+    bollname = Column(VARCHAR(250), nullable=True, default='')
+
+    utc_created_at = Column(TIMESTAMP, default=Func.utc_now)
+
+    @property
+    def created_at(self):
+        return Func.dt_to_timezone(self.utc_created_at)
+
+    @property
+    def updated_at(self):
+        return Func.dt_to_timezone(self.utc_updated_at)

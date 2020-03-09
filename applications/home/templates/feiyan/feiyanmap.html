@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta itemprop="name" content="重庆人，快来查看你附近的疫情信息！"/>
+    <meta name="description" itemprop="description" content="信息详细到小区！"/>
+    <!--百度api ak-->
+    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=ja8HMOAN7rlERnXbcws8WeBAht8RZCc9"></script>
+    <script src="https://mapv.baidu.com/build/mapv.min.js"></script>
+    <title>重庆-附近疫情查询</title>
+    <script>
+        var wx_share_cate_id = "26";
+    </script>
+    <link rel="stylesheet" href="{{ static_url('home/css/feiyanmap.css ') }}">
+
+</head>
+<body>
+<div class="container" id="data">
+    <div id="r-result"><input type="text" id="suggestId"  value="" placeholder="输入小区/街道名称查询"   /></div>
+
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:200px;height:auto; display:none;"></div>
+
+    <div style="position: fixed;left: 0px;right: 0px;bottom: 0px;top: 0px">
+        <div id="bdmap" style="width: 100%;height: 100%;"></div>
+    </div>
+
+    <div id="windowInfo" class="windowInfo" style="display: none">
+        <div class="close" onclick="hidewindow()"></div>
+        <div id="infoMsg">
+        </div>
+        <p class="source">数据来源：重庆市卫生健康委员会</p>
+        <div class="infoFooter">
+            <!-- logo -->
+            <img src="{{ static_url('home/images/feiyan/logo.png') }}" class="qcord"/>
+            <div class="footertext">
+                <div style="text-align: left">
+                    长按识别二维码 >>><br/>
+                    了解途拍相机
+                </div>
+            </div>
+            <!-- 二维码 -->
+            <img src="{{ static_url('home/images/feiyan/qrcode.jpg') }}" class="qcord"/>
+        </div>
+    </div>
+</div>
+
+<script>
+    var point = new BMap.Point("106.509569", "29.598646");
+    var map,mypoint,geolocation;
+    function showWindow(html){
+        document.getElementById("infoMsg").innerHTML = html;
+        document.getElementById("windowInfo").style.display = "block";
+    }
+    function hidewindow(){
+        document.getElementById("infoMsg").innerHTML  = '';
+        document.getElementById("windowInfo").style.display = "none";
+    }
+    function getCurrentPoint(p){
+        let aa=(map.getDistance(point,p))/1000
+        let pp=p
+        if(aa>30){
+            pp=point
+        }
+        return pp
+    }
+    function initMap(datas){
+        map = new BMap.Map("bdmap");
+        var users=[];
+        map.centerAndZoom(point, 14);
+
+
+        map.enableScrollWheelZoom();
+        geolocation = new BMap.Geolocation();
+
+        // 开启SDK辅助定位
+        geolocation.enableSDKLocation();
+
+        function myFun(item,p){
+            // opts.title="病例";
+            // opts.height=150;
+            var s =`  <div class="info_title">疫情病例：</div><div class="info_subtype info_subtype_name">${item.name}</div><div class="info_subtype info_subtype_timer">发现日期：${item.date}</div><div class="info_subtype info_subtype_pos">${item.address}</div>`;
+
+            var p= new BMap.Point( p[0], p[1]);
+            // 重新定位
+            map.panTo(p, true);
+            // map.centerAndZocenterAndZoomom(p, 14);
+            showWindow(s);
+            // var infoWindow = new BMap.InfoWindow(s, opts);
+            // map.openInfoWindow(infoWindow,p);
+            // console.log(p)
+            // map.itemAndZoom(item.coordinates, 7);
+
+
+        }
+        var geoc = new BMap.Geocoder();
+        var  xpoints=[];
+
+
+        var options = {
+            draw: 'heatmap',
+            size: 300,
+            unit: 'm',
+            gradient: { // 热力图渐变色
+                0.1: "rgb(0,0,100)",
+                0.15: "rgb(0,0,150)",
+                0.20: "rgb(0,0,200)",
+                0.25: "rgb(0,0,255)",
+                0.3: "rgb(0,100,0)",
+                0.35: "rgb(0,150,0)",
+                0.40: "rgb(0,200,0)",
+                0.45: "rgb(0,255,0)",
+                0.50: "rgb(239,98,146)",
+                0.60: "rgb(249,222,61)",
+                0.85: "yellow",
+                1.0: "rgb(221,109,34)"
+            },
+            max: 1.5, // 最大权重值
+            methods: { // 一些事件回调函数
+                click: function(item) { //
+                    // console.log(item);
+                    // myFun(item.data,item.geometry.coordinates)
+                },
+            }
+        }
+
+        function keys(a,b){
+
+            return a.toString().substr(0,11)+","+b.toString().substr(0,16);
+        }
+        function setPoint(point,item){
+            num = num - 1;
+            // console.log('...获取point'+point)
+            if (point) {
+                users.push({point: point, item: item});
+                xpoints.push({
+                    "geometry": {"type": "Point", "coordinates": Object.values(point)},
+                    "properties": {"count": 1},
+                    data: item
+                })
+                // console.log(num)
+                if (num == 0) {
+                    var dataSet = new mapv.DataSet(xpoints);
+                    // console.log(dataSet)
+                    var mapvsharp = new mapv.baiduMapLayer(map, dataSet, options);
+                    map.centerAndZoom(point, 14);
+
+                    geolocation.getCurrentPosition(function (r) {
+                        // alert(r.point.lat,r.point.lng)
+                        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                            let pr=getCurrentPoint(r.point)
+                            let mymarker = new BMap.Marker(pr);
+                            map.addOverlay(mymarker);
+                            nearBy(pr)
+                        } else {
+                            alert('failed' + this.getStatus());
+                        }
+                    });
+
+                }
+                point.lng += Math.random() * 0.00005;
+                point.lat += Math.random() * 0.0005;
+                // console.log(point)
+                var mk = new BMap.Marker(point)
+                console.log(item.name,item.date,item.address,point.lat,point.lng)
+                map.addOverlay(mk);
+                var iconPath = "{{ static_url('home/images/feiyan/pos2.png')}}"; //这个是你要显示坐标的图片的相对路径-->
+                replaceIcon(iconPath, mk, 30, 30);
+                mk.addEventListener("click", function () {
+                    myFun(item, Object.values(point))
+                });
+
+            }
+        }
+        var num=datas.length
+        for (let i in datas) {
+            let item = datas[i]
+            // console.log(item,i, num - 1)
+            if(item.position){
+                let position_str = new BMap.Point(Number(item.position.lng), Number(item.position.lat))
+                setPoint(position_str,item)
+            }else{
+                geoc.getPoint(item.address, function (point) {
+                        setPoint(point,item)
+                    },
+                    "重庆市");// 地址所在城市名
+            }
+        }
+            function nearBy(p){
+                var res={}
+                for (var i = users.length - 1; i >= 0; i--) {
+
+                    res[parseFloat(map.getDistance(users[i].point,p)) ]=users[i];
+                }
+
+
+                // console.log(res)
+                var vars=Object.keys(res).sort((a,b)=>{ return parseFloat(a)-parseFloat(b) });
+
+
+                var m3=m5=0;
+                for(let a of vars ){
+
+                    if(a<3000){
+                        m3+=1;
+                        m5+=1;
+                    }else if(a<5000){
+                        m5+=1;
+
+                    }
+                }
+
+                // console.log(vars)
+                var x=vars[0];
+
+                var one= res[x]
+                var s = `<div class="info_title">离我最近的疫情病例：<span style="color: #FF5050">${(x/1000).toFixed(2)}公里</span></div><div class="info_subtype info_subtype_pos">${one.item.address}</div><div class="info_more"><span>3公里内有${m3}个病例</span>|<span>5公里内有${m5}个病例</span></div>`
+                console.log('in...离我最近')
+                // opts.title="周边疫情";
+                // opts.height=340;
+                // map.panTo(p, true);
+                map.centerAndZoom(p, 14);
+                showWindow(s)
+                // var infoWindow = new BMap.InfoWindow(s, opts);
+                // map.openInfoWindow(infoWindow,p);
+            }
+
+            function G(id) {
+                return document.getElementById(id);
+            }
+
+            function replaceIcon(iconPath, marker, sizeW, sizeH) {
+                map.removeOverlay(marker);
+                var icons = iconPath; //这个是你要显示坐标的图片的相对路径-->
+                var icon = new BMap.Icon(icons, new BMap.Size(sizeW, sizeH)); //显示图标大小-->
+                marker.setIcon(icon);//设置标签的图标为自定义图标-->
+                map.addOverlay(marker);//将标签添加到地图中去-->
+            }
+            var acInput = new BMap.Autocomplete(    //建立一个自动完成的对象
+                {"input" : "suggestId"
+                    ,"location" : point
+                });
+
+            acInput.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+                var str = "";
+                var _value = e.fromitem.value;
+                var value = "";
+                if (e.fromitem.index > -1) {
+                    value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                }
+                str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+                value = "";
+                if (e.toitem.index > -1) {
+                    _value = e.toitem.value;
+                    value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                }
+                str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+                G("searchResultPanel").innerHTML = str;
+            });
+
+            var myValue;
+            acInput.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+                var _value = e.item.value;
+                myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+                setPlace();
+                document.querySelector("#suggestId").blur();
+
+            });
+
+            function setPlace(){
+
+                function myFun(){
+                    G("searchResultPanel").style.display = "none";
+                    console.log(local.getResults().getPoi(0))
+                    var pp = local.getResults().getPoi(0).point;    //
+                    nearBy(pp)
+                }
+                var local = new BMap.LocalSearch(map, { //智能搜索
+                    onSearchComplete: myFun
+                });
+                local.search(myValue);
+            }
+
+            var navigationControl = new BMap.NavigationControl({
+                // 靠左上角位置
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                offset: new BMap.Size(20,70),
+                // LARGE类型
+                type: BMAP_NAVIGATION_CONTROL_LARGE,
+                // 启用显示定位
+                enableGeolocation: true
+            });
+            map.addControl(navigationControl);
+            // 添加定位控件
+            var geolocationControl = new BMap.GeolocationControl();
+            geolocationControl.addEventListener("locationSuccess", function(e){
+                // 定位成功事件
+                nearBy(e.point)
+            });
+            geolocationControl.addEventListener("locationError",function(e){
+                // 定位失败事件
+                alert(e.message);
+            });
+            map.addControl(geolocationControl);
+
+        }
+
+</script>
+
+<!--// 疫情病例具体数据-->
+<script>
+    window.onload=function () {
+        initMap( {{mapdata}} );
+    }
+</script>

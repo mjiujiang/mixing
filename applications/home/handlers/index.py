@@ -15,7 +15,7 @@ from .common import CommonHandler
 from ..utils import tpl_params
 from ..models.content import Contact
 from ..models.content import Article
-
+import os, json
 
 class IndexHandler(CommonHandler):
     def get(self, *args, **kwargs):
@@ -48,3 +48,16 @@ class AboutHandler(CommonHandler):
         }
 
         self.render_html('about.html', **params)
+
+
+class FeiyanHandler(CommonHandler):
+    def get(self, *args, **kwargs):
+        dataPath = os.path.abspath('applications/home/templates/feiyan/data.json')
+        with open(dataPath, encoding="utf-8") as f:
+            str_data = json.load(f)
+            str_json = json.dumps(str_data, ensure_ascii=False)
+
+        params = {
+            'mapdata':str_json,
+        }
+        self.render_html('feiyan/feiyanmap.html', **params)

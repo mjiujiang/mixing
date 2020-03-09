@@ -144,6 +144,7 @@ class MenuAddHandler(CommonHandler):
             params['path'] = '/' + path
 
         user_id = self.current_user.get('id')
+        params['id'] = None
         role_id = self.current_user.get('role_id')
         if not self.super_role():
             params['user_id'] = user_id

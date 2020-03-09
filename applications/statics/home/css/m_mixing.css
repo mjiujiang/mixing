@@ -43,6 +43,19 @@
 
 		}
 
+.bgpicbooksboll {
+	position: fixed;
+	background: url(../images/m_books.png) no-repeat 2px center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-size: cover;
+	overflow: hidden;
+
+}
 		.bgpicshop {
 			position:fixed;
 			background:url(../images/m_shop.png) no-repeat 2px center;
@@ -53,7 +66,7 @@
 		}
 		.bgpicabout {
 			position:fixed;
-			background:url(../images/m_contact.png) no-repeat 2px center;
+			background:url(../images/m_books.png) no-repeat 2px center;
 			top:0; left:0; width:100%; height:100%; margin: 0; padding: 0;
 			background-size: cover;
 			overflow:hidden;
@@ -70,6 +83,12 @@
 		
 		color: #fff; 
 	}
+
+.cssmenu {
+	display: none;
+	margin-top: 4%;
+	overflow: hidden;
+}
 	.menu
 	{
 		display: none;
@@ -118,10 +137,10 @@
 		color: #fff;
 		padding: 0 5px;
 	}
-	.logo {
+	.logomixing {
 		position:absolute;
 		left:45%;
-		top:20%;
+		top:10%;
 
 		width:40px;height:40px;
 	}
@@ -131,19 +150,20 @@
 	}
 	.slogan {
 		position: absolute;
-		left: 10%;
+		left: 50%;
 		top: 40%;
+		margin: 0px -100px ;
 		height: 50px;
 		font-family: "微软雅黑","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"宋体" ;
-		font-size: 25px;
+		font-size: 17px;
 		text-align: center;
 		text-decoration: none;
 		color: #fff;
 
 	}
 	.bookssearch {
-		position:absolute;
-		left:40%;
+		position: absolute;
+		margin-left: 5px;
 		top:200px;
 
 		height:60px;
@@ -154,6 +174,7 @@
 
 
 .bookinput {
+
 	margin-top: 10px;
 	border: #808080 1px solid; /* 设置输入边框的颜色粗细 */
 	font-size: 12px; /* 设置输入框中字体的大小 */
@@ -165,15 +186,18 @@
 }
 
 .bookinputsubmit {
-	margin-top: 10px;
+	position: absolute;
+	left: 50%;
+
+	margin: 40px -60px;
 	border: #808080 1px solid; /* 设置输入边框的颜色粗细 */
 	font-size: 12px; /* 设置输入框中字体的大小 */
 	height: 30px; /* 设置输入框的高度 */
-	width: 80px;
+	width: 120px;
 	border-radius: 5px; /* 设置输入框圆角的大小 */
 	background-color: #1B242F;
 	color: #ffffff; /* 输入框中文字的颜色 */
-	display: inline; /* 使input框在同一行信息，不会换行显示，不使用float: left;样式，应为该样式会让input框周围的其它标签样式乱掉 */
+
 }
 .shopbtn{
 	position:absolute;
@@ -225,6 +249,7 @@ body .poplayer-class .layui-layer-btn .layui-layer-btn1{background:#999;}
 	position:absolute;
 	left:0;
 	bottom:0;
+	z-index: 999;
 }
 
 .box{
@@ -265,4 +290,103 @@ body .poplayer-class .layui-layer-btn .layui-layer-btn1{background:#999;}
     text-overflow: ellipsis;
     white-space: normal;
     box-sizing: border-box;
+}
+
+.plant {
+	position:absolute;
+	left:50%;
+	top:7%;
+	margin: 0 0 0 -50px;
+	height: 100px; /* 设置高度 */
+	width: 100px;
+}
+.plant-table-div {
+	position:absolute;
+	top:30%;
+	bottom: 60px;
+	width: 100%;
+
+}
+
+.plant-declare p{
+	position: fixed;
+	right: 1%;
+
+	color: grey;
+	margin-bottom: 55px;
+	bottom: 0px;
+	text-align: right;
+	font-size: 5px;
+}
+
+
+
+
+/*查询结果 边框样式, 去掉表格空隙*/
+.plant-info-table {
+    width: 100%;
+
+    border-collapse: separate;
+}
+
+.plant-info-table caption {
+	color: grey;
+    margin: 5px;
+	font-size: small;
+}
+
+.plant-info-table thead {
+    background-color: #F9F9F9;
+}
+
+/*边框样式, 字符截断(配合width使用)*/
+.plant-info-table th, .plant-info-table td {
+	border-collapse: separate;
+	border-spacing: 0px 20px;
+    word-break: break-all; /*以字母为单位折断*/
+    word-wrap: break-word; /*以单词为单位折断*/
+　　white-space: pre-wrap; /*汉字*/
+	text-align: center;
+
+
+}
+
+/*单数行*/
+.plant-info-table tbody tr:nth-child(odd) {
+    /*font-size: xx-small;*/
+	/*color: grey;*/
+}
+
+/*偶数行*/
+.plant-info-table tbody tr:nth-child(even) {
+    /*font-size: x-small;*/
+}
+
+/*用来控制td的宽度*/
+.plant-info-table .large {
+    width: 300px;
+}
+.plant-info-table .medium {
+    width: 200px;
+}
+
+.plant-info-table .small {
+    width: 100px;
+}
+
+.aboutmixing {
+	position: fixed;
+	left: 20%;
+	top: 29%;
+	width: auto;
+	height: fit-content;
+
+}
+
+.aboutmixing p{
+	font-size: xx-small;
+	line-height: 22px;
+    word-wrap:break-word;
+    word-break:normal;
+    overflow: hidden;
 }

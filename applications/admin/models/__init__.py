@@ -161,7 +161,7 @@ class AdminMenu(BaseModel):
     """
     __tablename__ = 'sys_admin_menu'
 
-    id = Column(Integer, primary_key=True, nullable=False, default=None)
+    id = Column(Integer, primary_key=True, nullable=True, default=None)
     user_id = Column(Integer, ForeignKey('sys_admin_user.id'), nullable=False, default='0')
     parent_id = Column(Integer, nullable=False, default=0)
     code = Column(String(64), nullable=True)

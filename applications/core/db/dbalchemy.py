@@ -140,7 +140,7 @@ class DBConfigParser(object):
             connections_str = connection_item['connections']
             for conn in connections_str:
                 print("aes_decrypt", aes_decrypt(conn['PASSWD']))
-                print(aes_encrypt('eb26acWq16E1'))
+                #print("jiami:" + aes_encrypt('mixing2020.'))
                 dburl = url.URL(drivername=conn['DRIVER']
                                 , username=conn['UID']
                                 , password=aes_decrypt(conn['PASSWD'])

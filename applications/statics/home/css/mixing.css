@@ -42,7 +42,14 @@
 			overflow:hidden;
 
 		}
+		.bgpicbooksboll {
+			position:fixed;
+			background:url(../images/pc_bolls.png) no-repeat 2px center;
+			top:0; left:0; width:100%; height:100%; margin: 0; padding: 0;
+			background-size: cover;
+			overflow:hidden;
 
+		}
 		.bgpicshop {
 			position:fixed;
 			background:url(../images/pc_shop.png) no-repeat 2px center;
@@ -53,7 +60,7 @@
 		}
 		.bgpicabout {
 			position:fixed;
-			background:url(../images/pc_contact.png) no-repeat 2px center;
+			background:url(../images/pc_books.png) no-repeat 2px center;
 			top:0; left:0; width:100%; height:100%; margin: 0; padding: 0;
 			background-size: cover;
 			overflow:hidden;
@@ -70,14 +77,45 @@
 		
 		color: #fff; 
 	}
+		/*
+        导航条
+    	*/
+
+		.cssmenu {
+			margin-top: 4%;
+			overflow: hidden;
+		}
+
+		.cssmenu > ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			float: right;
+		}
+
+
+		.cssmenu > ul > li {
+			float: left;
+			display: block;
+			margin: 0 70px;
+		}
+
+		.cssmenu > ul > li > a {
+			font-size: 10px;
+			font-weight: 400;
+			color: #ffffff;
+			text-decoration: none;
+		}
+
+
 	.menu
 	{
 		font-size: 0;
 		padding: 0;
-		
+		margin-top: 3%;
 		height: 50px;
-		margin-left: 50%;
-		
+		margin-left: 65%;
+
 
 		position: relative;
 	}
@@ -111,30 +149,30 @@
 		display: block;
 		height: 50px;
 		font-family: "微软雅黑","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"宋体" ;
-		font-size: 15px;
+		font-size: 10px;
 		text-align: center;
 		text-decoration: none;
 		color: #fff;
-		padding: 0 25px;
+		margin: 10px 40px;
 	}
-	.logo {
+	.logomixing {
 		position:absolute;
-		left:40px;
-		top:40px;
+		left:8%;
+		top:8%;
 
-		width:40px;height:40px;
+		width:80px;height:80px;
 	}
 	.logoimg {
-		height:60px;
-		width:60px;
+		height:80px;
+		width:80px;
 	}
 	.slogan {
 		position: absolute;
-		left: 30%;
-		top: 40%;
+		left: 25%;
+		top: 47%;
 		height: 50px;
 		font-family: "微软雅黑","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"宋体" ;
-		font-size: 35px;
+		font-size: 17px;
 		text-align: center;
 		text-decoration: none;
 		color: #fff;
@@ -163,6 +201,10 @@
 }
 
 .bookinputsubmit {
+	position: absolute;
+	left: 50%;
+
+	margin: 40px -60px;
 	border: #808080 1px solid; /* 设置输入边框的颜色粗细 */
 	font-size: 12px; /* 设置输入框中字体的大小 */
 	height: 30px; /* 设置输入框的高度 */
@@ -170,6 +212,7 @@
 	border-radius: 5px; /* 设置输入框圆角的大小 */
 	background-color: #1B242F;
 	color: #ffffff; /* 输入框中文字的颜色 */
+
 	display: inline; /* 使input框在同一行信息，不会换行显示，不使用float: left;样式，应为该样式会让input框周围的其它标签样式乱掉 */
 }
 .shopbtn{
@@ -217,4 +260,100 @@ body .poplayer-class .layui-layer-btn .layui-layer-btn1{background:#999;}
 
 .bottom-nav{
 	display: none;
+}
+
+.plant {
+	position:absolute;
+	left:54%;
+	top:37%;
+	height: 150px; /* 设置输入框的高度 */
+	width: 150px;
+	overflow:hidden
+}
+.plant-table-div {
+	position:absolute;
+	left:65%;
+	top:23%;
+	height: 700px; /* 设置输入框的高度 */
+	width: 400px;
+}
+
+/*查询结果 边框样式, 去掉表格空隙*/
+.plant-info-table {
+    width: 100%;
+	border-spacing: 0px 4px;
+    border-collapse: separate;
+}
+
+.plant-info-table caption {
+    font-weight: bold;
+    margin: 5px;
+	font-size: larger;
+	color: grey;
+}
+
+.plant-info-table thead {
+    background-color: #F9F9F9;
+}
+
+/*边框样式, 字符截断(配合width使用)*/
+.plant-info-table th, .plant-info-table td {
+    word-break: break-all; /*以字母为单位折断*/
+    word-wrap: break-word; /*以单词为单位折断*/
+　　white-space: pre-wrap; /*汉字*/
+	text-align: center;
+
+}
+
+/*单数行*/
+.plant-info-table tbody tr:nth-child(odd) {
+    /*font-size: small;*/
+	/*color: grey;*/
+}
+
+/*偶数行*/
+.plant-info-table tbody tr:nth-child(even) {
+    /*font-size: large;*/
+	/*border-spacing: 12px;*/
+	/*margin-bottom: 10px;*/
+
+}
+
+/*用来控制td的宽度*/
+.plant-info-table .large {
+    width: 300px;
+}
+.plant-info-table .medium {
+    width: 200px;
+}
+
+.plant-info-table .small {
+    width: 100px;
+}
+
+.plant-declare p{
+	position: fixed;
+	right: 1%;
+
+	color: grey;
+	margin-bottom: 55px;
+	bottom: 0px;
+	text-align: right;
+	font-size: 5px;
+}
+
+.aboutmixing {
+	position: fixed;
+	left: 43%;
+	top: 49%;
+	font-size: 8px;
+	line-height: 22px;
+}
+
+.aboutmixing p{
+	font-size: small;
+	line-height: 22px;
+    word-wrap:break-word;
+    word-break:normal;
+    overflow: hidden;
 }

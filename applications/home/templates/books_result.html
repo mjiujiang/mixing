@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  <title>登记册</title>
+
+  <link rel="stylesheet" href="{{ static_url('layui/css/layui.css ') }}">
+      <script type="text/javascript">
+        if ((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i))) {    //跳到手机端
+            document.write("<link href=" + "{{ static_url('home/css/m_mixing.css') }}" + " rel=stylesheet >");
+        }else {
+            document.write("<link href=" + "{{ static_url('home/css/mixing.css') }}" + " rel=stylesheet >");
+        }
+    </script>
+
+	
+</head>
+<body>
+  <!-- nav部分 -->
+  <div class="bgpicbooksboll" id="bolls">
+
+
+      <div class="cssmenu">
+          <ul>
+              <li class=""><a href="/">首页</a></li>
+              <li class=""><a href="/books.html">登记册</a></li>
+              <li class=""><a href="/shop.html">觅星商店</a></li>
+              <li class=""><a href="/about.html">联系我们</a></li>
+          </ul>
+      </div>
+      <div class="logomixing">
+          <h1><a><img src="{{ static_url('home/images/logo.png') }}" class="logoimg" alt="觅星"> </a></h1>
+      </div>
+
+      <div class="layui-container bottom-nav">
+          <div class="layui-row box">
+              <div class="layui-col-xs3">
+                    <a href="/">首页</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs3">
+                    <a href="/books.html">登记册</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs4">
+                    <a href="/shop.html">觅星商店</a>
+                    <span>|</span>
+              </div>
+              <div class="layui-col-xs2">
+                  <a href="/about.html">关于</a>
+              </div>
+
+          </div>
+      </div>
+  </div>
+
+  <div  class="plant">
+      <img src="{{ static_url( bollurl  )  }}" alt="Planet" style="width: 100%">
+  </div>
+
+  <div class="plant-table-div">
+      <table class="plant-info-table">
+          <caption>编号{{lbh}}的详细信息</caption>
+          <tr><td> <pre> </pre></td></tr>
+          <tr>
+              <td><p style="font-size: xx-small;color: grey" >录编号</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{lbh}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">名字</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{name}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">纪念日期</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{data}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">星座</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{xz}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">赤经</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{cj}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">赤纬</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{cw}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">视星等</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{sx}}</p></td>
+          </tr>
+
+          <tr>
+              <td><p style="font-size: xx-small;color: grey">纪念</p></td>
+          </tr>
+          <tr>
+              <td><p style="font-size: small">{{jn}}</p></td>
+          </tr>
+        </table>
+
+  </div>
+  <div class="plant-declare">
+      <p>注：以上数据仅在MIXING觅星以内存储，与第三方无关。</p>
+  </div>
+
+  <!-- footer部分 -->
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{{ static_url('layui/layui.js') }}"></script>
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+
+  layui.use(['element', 'table', 'layer'], function(){
+        var element = layui.element;
+        var table = layui.table;
+        var $ = layui.jquery, layer = layui.layer;
+
+        // 存放结果数据
+        var Datas = [];
+        //触发事件
+
+//判断浏览器大小方法
+    function screen() {
+        //获取当前窗口的宽度
+	    var width = $(window).width();
+	    if (width > 1200) {
+	        return 3;   //大屏幕
+	    } else if (width > 992) {
+	        return 2;   //中屏幕
+	    } else if (width > 768) {
+	        return 1;   //小屏幕
+	    } else {
+	        return 0;   //超小屏幕
+	    }
+    }
+
+
+    function showTable(){
+      // 查询结果
+      layer.open({
+        type: 1,
+        id: 'Layer',
+        title: false,
+        area: screen() < 2 ? ['90%', '80%'] : ['740px', '400px'],
+          skin:'poplayer-class',
+        shade:  0,
+        anim: -1,
+        content: '<div class="table" style="background-color: #393D49; color: #fff; "></div>',
+        success: function(layero, index) {
+            layer.iframeAuto(index);
+            var colsList = [
+                [
+                    { field: 'title', title: '标题', width:100 },
+                    { field: 'content', title: '内容' }
+                ]
+            ];
+
+            console.log(Datas);
+            table.render({
+                elem: layero.find('.table'),
+                id: 'Message',
+                data: Datas,
+                cols: colsList,
+                limit: 8,
+                page: false,
+            });
+        }
+      });
+    }
+
+
+    $(document).ready(function () {
+       // $('#submit').click();
+
+    })
+
+    });
+</script>
+
+</body>
+</html>
