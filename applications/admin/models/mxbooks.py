@@ -31,7 +31,7 @@ class Books(BaseModel):
         """
     __tablename__ = 'mx_addonarticle'
 
-    aid = Column(Integer, primary_key=True)
+    aid = Column(Integer, primary_key=True, nullable=True, default=None)
     #typeid = Column(SmallInteger, nullable=True)
     #body = Column(TEXT,  default='')
     #redirecturl = Column(VARCHAR(255), nullable=True, default='')
@@ -47,6 +47,7 @@ class Books(BaseModel):
     cw = Column(VARCHAR(250), nullable=True, default='')
     sx = Column(VARCHAR(250), nullable=True, default='')
     jn = Column(VARCHAR(250), nullable=True, default='')
+    bollid = Column(Integer, nullable=False, default=0)
 
     utc_created_at = Column(TIMESTAMP, default=Func.utc_now)
 

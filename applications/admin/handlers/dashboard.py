@@ -140,6 +140,12 @@ class BooksListAddHandler(CommonHandler):
         params['cw'] = params.get('cw', 0)
         params['sx'] = params.get('sx', 0)
         params['jn'] = params.get('jn', 0)
+        bollid = params.get('bollid', 0)
+        if not bollid:
+            bollid = 0
+        else:
+            bollid = int(bollid)
+        params['bollid'] = bollid
         params['userip'] = self.request.remote_ip
 
         if not params.get('lbh', None) and \
@@ -197,6 +203,12 @@ class BooksListEditHandler(CommonHandler):
         params['cw'] = params.get('cw', 0)
         params['sx'] = params.get('sx', 0)
         params['jn'] = params.get('jn', 0)
+        bollid = params.get('bollid', 0)
+        if not bollid:
+            bollid = 0
+        else:
+            bollid = int(bollid)
+        params['bollid'] = bollid
         params['userip'] = self.request.remote_ip
 
         if not params.get('lbh', None) and \

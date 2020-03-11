@@ -1288,7 +1288,7 @@ h2.typoh2{
   outline: none;
   border:1px solid #8d8d8d;
   -webkit-appearance: none;
-  background:#none;©
+  background:#none;
 }
 .contact-grid  p{
   margin: .8em 0;
@@ -1893,3 +1893,4 @@ p.your-para{
 .blog-post img, .blog-post p img {
   max-width: 100% !important;
 }
+

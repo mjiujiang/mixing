@@ -47,9 +47,16 @@ class BooksQueryResultHandler(CommonHandler):
         query = Books.Q.filter(Books.lbh == lbh).first()
         if not query:
             return self.error('未查询到相关数据！')
-        bollid = random.randint(3,59)
+        bollid = None
+        if not query.bollid:
+            bollid = random.randint(3,59)
+        else:
+            bollid = query.bollid
+
         boll = Bolls.Q.filter(Bolls.id == bollid).first()
-        if boll:
+        if not boll:
+            bollurl = "home/images/books_result_bolls/0001_325.gif"
+        else:
             bollurl = boll.bollurl
         params = {
             "lbh": query.lbh,

@@ -1,7 +1,16 @@
 {% extends "../base.html" %}
 
-{% block title %} {% end %}
-{% block css %} {% end %}
+{% block title %}
+{% end %}
+{% block css %}
+<style>
+    .layui-table-cell {
+        text-align: center;
+        height: auto !important;
+        white-space: normal;
+    }
+</style>
+{% end %}
 {% block body %}
 <div class="layui-body">
     <div class="layui-btn-group topToolbar">
@@ -19,7 +28,7 @@
 {% end %}
 
 {% block javascript %}
-
+<script src="{{ static_url('layui/layui.js') }}" charset="utf-8"></script>
 <script type="text/html" id="barBoll">
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 
@@ -38,7 +47,11 @@
             , data: {
                 _xsrf: get_xsrf()
             }
+            , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
             , done: function (res) {
+                layer.closeAll('loading'); //关闭loading
                 //上传完毕回调
                 table.reload('table_boll', {
                     url: '/admin/boll/list'
@@ -47,17 +60,34 @@
             }
             , error: function () {
                 //请求异常回调
+                layer.closeAll('loading'); //关闭loading
             }
         });
 
         table.render({
             elem: '#table_boll'
-            , height: 400
+            , height: 'full-98'
             , url: '/admin/boll/list' //数据接口
             , page: true //开启分页
+            , initSort: {
+                field: 'id' //排序字段，对应 cols 设定的各字段名
+                , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            ,sort:true
             , cols: [[ //表头
-                {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                {field: 'id', title: 'ID', width: 80, sort: true}
                 , {field: 'bollname', title: '图片名'}
+                // , {field: 'bollurl', title: '图片', templet: function(d){
+                //     imgurl = "{{ static_url('') }}" + d.bollurl;
+                //     console.log(imgurl);
+                //     return '<img src="' + imgurl  + '"' + 'style="width:100px; height:100px;"' + '/>'
+                //     }}
+                 , {field: 'bollurl', title: '图片', templet: function(d){
+                     imgurl = "{{ static_url('') }}" + d.bollurl;
+                     return '<a href="' + imgurl + '" target="_blank " title="点击查看">' +
+                        '<img src="' + imgurl + '" style="height:20px;" />' +
+                        '</a>';
+                    }}
                 , {field: 'utc_created_at', title: '日期'}
                 ,{fixed: 'right', width:150, align:'center', toolbar: '#barBoll'}
             ]]

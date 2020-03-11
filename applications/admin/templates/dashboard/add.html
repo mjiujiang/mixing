@@ -39,7 +39,7 @@
             <div class="layui-input-inline w300">
                 <input type="text" class="layui-input field-key" name="cj" lay-verify="" autocomplete="off" value="">
             </div>
-            <label class="layui-form-label">赤度</label>
+            <label class="layui-form-label">赤纬</label>
             <div class="layui-input-inline w300">
                 <input type="text" class="layui-input field-key" name="cw" lay-verify="" autocomplete="off" value="">
             </div>
@@ -48,6 +48,10 @@
             <label class="layui-form-label">视星等</label>
             <div class="layui-input-inline w300">
                 <input type="text" class="layui-input field-key" name="sx" lay-verify="" autocomplete="off" value="">
+            </div>
+            <label class="layui-form-label">星球ID</label>
+            <div class="layui-input-inline w300">
+                <input type="number" class="layui-input field-key" name="bollid" lay-verify="" autocomplete="off" value="">
             </div>
 
         </div>
@@ -102,7 +106,7 @@ layui.use(['form'], function() {
                     layer.msg(res.msg)
                     $(":input[name='title']").focus()
                 } else {
-                    layer.msg('{{ _('未知错误') }}')
+                    layer.msg('{{ _('未知错误！') }}')
                 }
             },
             error: function(xhr){
